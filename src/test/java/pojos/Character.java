@@ -123,7 +123,7 @@ public class Character {
     private String house;
     private String school;
 
-    public Character(java.lang.String _id, java.lang.String name, java.lang.String role, java.lang.String house, java.lang.String school, java.lang.String __v, java.lang.String ministryOfMagic, java.lang.String orderOfThePhoenix, java.lang.String dumbledoresArmy, java.lang.String deathEater, java.lang.String bloodStatus, java.lang.String species) {
+    public Character(String _id, String name, String role, String house, String school, String __v, java.lang.String ministryOfMagic, String orderOfThePhoenix, String dumbledoresArmy, String deathEater, String bloodStatus, String species) {
         this._id = _id;
         this.name = name;
         this.role = role;
