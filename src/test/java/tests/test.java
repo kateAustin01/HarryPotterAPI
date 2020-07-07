@@ -4,8 +4,13 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import utilities.ConfigurationReader;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
 public class test {
     /*
@@ -27,7 +32,8 @@ public class test {
 
     @Test
     public void Verify_SortingHat() {
-        Response response = given().pathParam("id","sortingHat").when().get("/{id}");
-        System.out.println(response.prettyPrint());
+
+
+
     }
 }
