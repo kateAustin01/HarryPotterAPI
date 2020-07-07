@@ -59,8 +59,11 @@ public class test {
 
         given().accept(ContentType.JSON).
                 when().queryParam("key", "invalid").
-                get("/characters")
-                .then().assertThat().statusCode(401).contentType("application/json; charset=utf-8").statusLine(containsString("Unauthorized")).body("error", hasValue("API Key Not Found"));
+                get("/characters").prettyPeek()
+                .then().assertThat().statusCode(401).
+                                    contentType("application/json; charset=utf-8").
+                                    statusLine(containsString("Unauthorized")).
+                                    body("error", is("API Key Not Found"));
     }
 
 }
