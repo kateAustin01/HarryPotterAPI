@@ -5,6 +5,10 @@ public class Character {
     private String _id;
     private String name;
 
+    public Character(){
+
+    }
+
     @Override
     public String toString() {
         return "Character{" +

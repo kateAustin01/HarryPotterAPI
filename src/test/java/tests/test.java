@@ -1,14 +1,15 @@
 package tests;
 
+import com.google.gson.Gson;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import pojos.Character;
 import utilities.ConfigurationReader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.*;
@@ -39,16 +40,17 @@ public class test {
     public void Verify_SortingHat() {
 
         Response response = given().pathParam("Mahriban", "sortingHat").when().get("/{Mahriban}");
-        assertEquals(200,response.statusCode());
-        assertEquals("application/json; charset=utf-8",response.contentType());
-        List<String> houses = new ArrayList<>(Arrays.asList("\"Gryffindor\"", "\"Ravenclaw\"", "\"Slytherin\"", "\"Hufflepuff\""));
+        assertEquals(200, response.statusCode());
+        assertEquals("application/json; charset=utf-8", response.contentType());
+        ArrayList<String> houses = new ArrayList(Arrays.asList("\"Gryffindor\"", "\"Ravenclaw\"", "\"Slytherin\"", "\"Hufflepuff\""));
+
         assertTrue(houses.contains(response.getBody().asString()));
 
     }
 
 
     @Test
-    public void verify_Bad_Key(){
+    public void verify_Bad_Key() {
         given().accept(ContentType.JSON).
                 when().queryParam("key", "invalid").
                 get("/characters").prettyPeek()
@@ -59,15 +61,36 @@ public class test {
     }
 
     @Test
-    public void verify_no_Key(){
+    public void verify_no_Key() {
         given().accept(ContentType.JSON).get("/characters")
                 .then().assertThat().statusCode(409).contentType("application/json; charset=utf-8")
                 .statusLine(containsString("Conflict"))
                 .body("error", is("Must pass API key for request"));
     }
+    /*
+    Verify number of characters
+1. Send a get request to /characters. Request includes : • Header Accept with value application/json
+• Query param key with value {{apiKey}}
+2. Verify status code 200, content type application/json; charset=utf-8
+3. Verify response contains 194 characters
+     */
+    @Test
+    public void verify_number_of_keys(){
+       given().accept("application/json")
+                .when().queryParam("key",ConfigurationReader.getProperty("key"))
+                .get("/characters")
+                .then().assertThat().statusCode(200).assertThat().contentType("application/json; charset=utf-8");
 
 
+       Response response = given().when().queryParam("key",ConfigurationReader.getProperty("key")).get("/characters");
 
+        String responseInString = response.asString();
+        Character[] characters = new Gson().fromJson(responseInString, Character[].class);
+        int size = characters.length;
+        assertEquals(194, size);
+
+
+    }
 
 
 }
