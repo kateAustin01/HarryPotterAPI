@@ -19,22 +19,21 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class test {
-    /*
+
+    @BeforeAll
+    public static void setup() {
+        baseURI = ConfigurationReader.getProperty("baseUri");
+
+    }
+
+      /*
     Verify sorting hat
 1. Send a get request to /sortingHat. Request includes :
 2. Verify status code 200, content type application/json; charset=utf-8
 3. Verify that response body contains one of the following houses:
 "Gryffindor", "Ravenclaw", "Slytherin", "Hufflepuff"
 
-
-
-
-     */
-    @BeforeAll
-    public static void setup() {
-        baseURI = ConfigurationReader.getProperty("baseUri");
-
-    }
+       */
 
     @Test
     public void Verify_SortingHat() {
