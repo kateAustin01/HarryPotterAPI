@@ -35,20 +35,17 @@ public class test {
     public void Verify_SortingHat() {
 
         Response response = given().pathParam("Mahriban", "sortingHat").when().get("/{Mahriban}");
-        response.prettyPrint();
-        String name = response.asString();
-        List<String> houses = new ArrayList<>(Arrays.asList("Gryffindor", "Ravenclaw", "Slytherin", "Hufflepuff"));
-        assertTrue(houses.contains(name));
+        assertEquals(200,response.statusCode());
+        assertEquals("application/json; charset=utf-8",response.contentType());
+        List<String> houses = new ArrayList<>(Arrays.asList("\"Gryffindor\"", "\"Ravenclaw\"", "\"Slytherin\"", "\"Hufflepuff\""));
+        assertTrue(houses.contains(response.getBody().asString()));
+
+
 
 
 
 
 
     }
-    /*
-    1. Send a get request to /sortingHat. Request includes :
-2. Verify status code 200, content type application/json; charset=utf-8
-3. Verify that response body contains one of the following houses:
-"Gryffindor", "Ravenclaw", "Slytherin", "Hufflepuff"
-     */
+
 }
