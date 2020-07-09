@@ -2,6 +2,7 @@ package tests;
 
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import utilities.ConfigurationReader;
@@ -46,7 +47,16 @@ public class test {
 
     }
 
-
+/*
+Verify bad key
+ 1.Send a get request to /characters.
+  Request includes :
+  •Header Accept with value application/json
+  •Query param key with value invalid
+  2.Verify status code 401, content type application/json; charset=utf-8
+  3.Verify response status line include message Unauthorized
+  4.Verify that response body says"error":"APIKeyNotFound"
+ */
     @Test
     public void verify_Bad_Key(){
         given().accept(ContentType.JSON).
@@ -58,6 +68,16 @@ public class test {
                 body("error", is("API Key Not Found"));
     }
 
+
+    /*
+    Verify no key
+    1.Send a get request to /characters.
+    Request includes :
+    •Header Accept with value application/json
+    2.Verify status code 409, content type application/json; charset=utf-8
+    3.Verify response status line include message Conflict
+    4.Verify that response body says"error":"MustpassAPIkeyforrequest"
+     */
     @Test
     public void verify_no_Key(){
         given().accept(ContentType.JSON).get("/characters")
@@ -67,7 +87,26 @@ public class test {
     }
 
 
+    /*
+    Verify number of characters
+    1.Send a get request to /characters.
+     Request includes :
+     •Header Accept with value application/json
+     •Query param key with value {{apiKey}}
+     2.Verify status code 200, content type application/json; charset=utf-8
+     3.Verify response contains 194 characters
+     */
+    @Test
+    public void verify_Number_of_characters( ){
 
+      given().accept(ContentType.JSON).
+                when().queryParam("key", "$2a$10$cKpTYy0TaiByxOxcjQw3eeAYAOz.wbsJWo9.XYtvXBie2dwp4WV7S").
+                get("/characters").prettyPeek()
+                .then().assertThat().statusCode(200)
+                .contentType("application/json; charset=utf-8")
+                .body("response.characters", hasSize(194));
+
+    }
 
 
 }
